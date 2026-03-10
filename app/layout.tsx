@@ -11,9 +11,9 @@ export const metadata: Metadata = {
 };
 
 const topNavItems = [
-  { label: "лавная", href: "/" },
+  { label: "Главная", href: "/" },
   { label: "Mini App", href: "/mini/vitos-club" },
-  { label: "дмин", href: "/admin/vitos-club" },
+  { label: "Админ", href: "/admin/vitos-club" },
 ];
 
 export default function RootLayout({
