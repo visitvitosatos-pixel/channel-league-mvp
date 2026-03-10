@@ -1,21 +1,32 @@
+﻿import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import "./globals.css";
-import type { Metadata } from "next";
-import { TopNav } from "@/components/TopNav";
 import { TelegramThemeClient } from "@/components/TelegramThemeClient";
+import { TopNav } from "@/components/TopNav";
 
 export const metadata: Metadata = {
   title: "Channel League MVP",
-  description: "White-label Telegram Mini App для каналов со ставками и репутацией участников.",
+  description: "White-label Mini App для Telegram-каналов с рейтингом ставок и вовлечением.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+const topNavItems = [
+  { label: "лавная", href: "/" },
+  { label: "Mini App", href: "/mini/vitos-club" },
+  { label: "дмин", href: "/admin/vitos-club" },
+];
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: ReactNode;
+}>) {
   return (
     <html lang="ru">
       <body>
         <TelegramThemeClient />
         <div className="appShell">
-          <TopNav />
-          {children}
+          <TopNav items={topNavItems} />
+          <main className="container">{children}</main>
         </div>
       </body>
     </html>
