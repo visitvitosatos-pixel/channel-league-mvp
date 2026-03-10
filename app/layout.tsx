@@ -6,7 +6,8 @@ import { TopNav } from "@/components/TopNav";
 
 export const metadata: Metadata = {
   title: "Channel League MVP",
-  description: "White-label Mini App для Telegram-каналов с рейтингом ставок и вовлечением.",
+  description:
+    "White-label Mini App для Telegram-каналов с рейтингом ставок и вовлечением.",
 };
 
 const topNavItems = [
