@@ -1,0 +1,203 @@
+:root {
+  --bg: #08101f;
+  --bg-soft: #10192f;
+  --surface: rgba(255, 255, 255, 0.08);
+  --surface-strong: rgba(255, 255, 255, 0.12);
+  --text: #f5f7ff;
+  --muted: rgba(245, 247, 255, 0.7);
+  --border: rgba(255, 255, 255, 0.12);
+  --accent: #7c5cff;
+  --success: #7dffbd;
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
+  color-scheme: dark;
+}
+
+:root[data-scheme="light"] {
+  --bg: #eef3ff;
+  --bg-soft: #f8faff;
+  --surface: rgba(255, 255, 255, 0.75);
+  --surface-strong: rgba(255, 255, 255, 0.92);
+  --text: #111728;
+  --muted: rgba(17, 23, 40, 0.72);
+  --border: rgba(17, 23, 40, 0.08);
+  --accent: #5f51ff;
+  --success: #0f9f68;
+  --shadow: 0 18px 42px rgba(97, 124, 196, 0.15);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  min-height: 100vh;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(124, 92, 255, 0.25), transparent 28%),
+    radial-gradient(circle at top right, rgba(53, 208, 255, 0.16), transparent 24%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
+  color: var(--text);
+}
+
+a { color: inherit; text-decoration: none; }
+button, input, textarea { font: inherit; }
+button { cursor: pointer; }
+
+.appShell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.topNav {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.04);
+  border-radius: 999px;
+  width: fit-content;
+  backdrop-filter: blur(20px);
+}
+.topNavItem { padding: 10px 16px; border-radius: 999px; color: var(--muted); }
+.topNavItemActive { background: var(--surface-strong); color: var(--text); }
+
+.pageWrap {
+  display: grid;
+  gap: 20px;
+}
+.landingGrid {
+  grid-template-columns: 1.3fr 1fr;
+  align-items: start;
+}
+.heroColumn {
+  padding: 12px 0;
+}
+.heroColumn h1 { font-size: clamp(40px, 5vw, 68px); line-height: 1.02; margin: 16px 0; max-width: 12ch; }
+.lead { font-size: 18px; line-height: 1.6; color: var(--muted); max-width: 760px; }
+.smallLead { max-width: 560px; }
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--success);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.ctaRow { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.primaryButton,
+.secondaryButton {
+  border: 0;
+  border-radius: 18px;
+  padding: 14px 20px;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+.primaryButton {
+  color: white;
+  background: linear-gradient(135deg, var(--accent), #35d0ff);
+  box-shadow: var(--shadow);
+}
+.secondaryButton {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.primaryButton:hover, .secondaryButton:hover { transform: translateY(-1px); }
+.glassCard {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  border-radius: 28px;
+  padding: 24px;
+  backdrop-filter: blur(24px);
+}
+.metricCard, .featureCard { min-height: 220px; }
+.featureList { margin: 16px 0 0; padding-left: 18px; line-height: 1.8; color: var(--muted); }
+.muted { color: var(--muted); }
+.maxWidth520 { max-width: 520px; }
+.brandHero { display: flex; align-items: center; gap: 16px; }
+.brandBadge {
+  width: 16px;
+  height: 64px;
+  border-radius: 999px;
+  box-shadow: 0 0 40px rgba(124, 92, 255, 0.6);
+}
+.miniGrid { display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 20px; }
+.mainPanel { min-height: 560px; }
+.sideColumn { display: grid; gap: 20px; }
+.cardTopRow, .adminHeaderRow { display: flex; justify-content: space-between; gap: 16px; align-items: start; }
+.cardTopRow h2, .adminHeaderRow h1 { margin: 8px 0; }
+.pulseDot {
+  width: 14px; height: 14px; border-radius: 50%;
+  box-shadow: 0 0 24px currentColor;
+}
+.crowdSplitBlock {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0;
+}
+.crowdSplitBlock > div,
+.profileStats > div,
+.adminMetricGrid .glassCard {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 18px;
+}
+.crowdSplitBlock strong,
+.profileStats strong,
+.adminMetricGrid strong { display: block; font-size: 28px; margin-top: 8px; }
+.predictionForm { display: grid; gap: 16px; }
+.field { display: grid; gap: 8px; }
+.field label { font-size: 14px; color: var(--muted); }
+.field input,
+.field textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+.field textarea { min-height: 96px; resize: vertical; }
+.chipRow { display: flex; gap: 10px; }
+.chip {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 12px 18px;
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+}
+.chipActive { background: linear-gradient(135deg, var(--accent), #35d0ff); border-color: transparent; }
+.statusMessage { margin: 0; color: var(--success); }
+.profileStats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 12px; }
+.profileStats span { color: var(--muted); font-size: 13px; }
+.miniList { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 12px; }
+.miniList li { display: grid; gap: 4px; padding: 14px 0; border-top: 1px solid var(--border); }
+.boardsGrid, .adminGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.tableWrap { display: grid; gap: 16px; }
+.tableTitleRow { display: flex; align-items: end; justify-content: space-between; gap: 12px; }
+.boardTable { width: 100%; border-collapse: collapse; }
+.boardTable th, .boardTable td { padding: 12px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+.boardTable th { color: var(--muted); font-weight: 500; }
+.playerCell { display: grid; }
+.playerCell span { color: var(--muted); font-size: 12px; }
+.adminMetricGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.postPreview {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: rgba(255,255,255,0.04);
+  margin-top: 16px;
+}
+
+@media (max-width: 980px) {
+  .landingGrid,
+  .miniGrid,
+  .boardsGrid,
+  .adminGrid,
+  .adminMetricGrid {
+    grid-template-columns: 1fr;
+  }
+  .heroColumn h1 { max-width: 100%; }
+}

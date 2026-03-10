@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RoundStatus {
+  DRAFT
+  OPEN
+  LOCKED
+  SCORED
+}
+
+enum PickSide {
+  HOME
+  DRAW
+  AWAY
+}
+
+model Channel {
+  id            String        @id @default(cuid())
+  slug          String        @unique
+  title         String
+  brandName     String
+  accentColor   String        @default("#7C5CFF")
+  logoUrl       String?
+  telegramChatId String?
+  isActive      Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  admins        ChannelAdmin[]
+  rounds        Round[]
+  events        Event[]
+  reports       AdminReport[]
+}
+
+model ChannelAdmin {
+  id        String   @id @default(cuid())
+  channelId String
+  tgUserId  String
+  role      String   @default("owner")
+  createdAt DateTime @default(now())
+  channel    Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@unique([channelId, tgUserId])
+}
+
+model User {
+  id          String       @id @default(cuid())
+  tgUserId    String       @unique
+  username    String?
+  displayName String
+  createdAt   DateTime     @default(now())
+  lastSeenAt  DateTime     @default(now())
+  predictions Prediction[]
+  scores      Score[]
+}
+
+model Round {
+  id         String       @id @default(cuid())
+  channelId  String
+  dateKey    String
+  title      String
+  lockAt     DateTime
+  status     RoundStatus  @default(DRAFT)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  channel    Channel      @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  matches    Match[]
+  scores     Score[]
+  predictions Prediction[]
+
+  @@unique([channelId, dateKey])
+}
+
+model Match {
+  id         String     @id @default(cuid())
+  roundId     String
+  sport      String     @default("football")
+  homeTeam   String
+  awayTeam   String
+  startsAt   DateTime
+  resultSide PickSide?
+  scoreLine  String?
+  round      Round      @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  predictions Prediction[]
+}
+
+model Prediction {
+  id          String   @id @default(cuid())
+  userId      String
+  channelId   String
+  roundId     String
+  matchId     String
+  pick        PickSide
+  confidence  Int      @default(50)
+  note        String?
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  round       Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  match       Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roundId, matchId])
+}
+
+model Score {
+  id                  String   @id @default(cuid())
+  userId              String
+  roundId             String
+  channelId           String
+  participationPoints Int      @default(1)
+  correctPickPoints   Int      @default(0)
+  crowdBonus          Int      @default(0)
+  streakBonus         Int      @default(0)
+  totalPoints         Int      @default(1)
+  createdAt           DateTime @default(now())
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  round               Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roundId])
+}
+
+model Event {
+  id         String   @id @default(cuid())
+  channelId   String
+  userId      String?
+  type       String
+  payload    Json
+  createdAt  DateTime @default(now())
+  channel    Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+}
+
+model AdminReport {
+  id          String   @id @default(cuid())
+  channelId   String
+  periodStart DateTime
+  periodEnd   DateTime
+  payload     Json
+  createdAt   DateTime @default(now())
+  channel     Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+}
