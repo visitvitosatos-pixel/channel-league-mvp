@@ -1,80 +1,24 @@
-# Channel League MVP
+# 🏆 Channel League MVP — Авторская экосистема для Telegram-каналов
 
-Pilot-ready MVP для Telegram Mini App: пользователи фиксируют свои пики, видят реакцию толпы и попадают в рейтинг, а админ канала получает white-label витрину и статистику участия.
+**Channel League** — это премиальное решение для трансформации хаоса спортивных обсуждений в азартную лигу. Создано для тех, кто хочет монетизировать и удерживать аудиторию через статус, репутацию и социальный капитал.
 
-## Что внутри
+## 🔥 Ключевые преимущества (Upgrade 2026)
+- **Visual Excellence**: Полный Glassmorphism-дизайн с поддержкой iPhone 17 (Safari Blur).
+- **Social Proof**: Живая лента событий в реальном времени.
+- **Advanced Analytics**: Интеграция xG-показателей и аналитики первого тайма.
+- **Haptic Feedback**: Тактильный отклик при действиях (Telegram SDK).
+- **Admin Engine**: Не просто статистика, а расчет Active Core и генератор контента.
 
-- **`app/`** — фронтенд и API на Next.js
-- **`components/`** — UI-компоненты Mini App и admin view
-- **`lib/`** — env, Telegram helpers, mock data, repository
-- **`prisma/`** — схема PostgreSQL
-- **`scripts/`** — вспомогательные скрипты
-- **demo mode** — показывает продукт без базы и без реального Telegram initData
-- **live mode** — включается через `DEMO_MODE=false` и `DATABASE_URL`
+## 🚀 Быстрый старт
+1. **Установка:** `npm install`
+2. **Конфиг:** Переименуй `.env.example` в `.env` и укажи `DATABASE_URL`.
+3. **Запуск:** `npm run dev`
 
-## Что уже готово
+## 💎 Маркетинговые фишки под капотом
+- **Trust Index**: Психологическая замена баллам, повышающая ценность аккаунта.
+- **Division System**: Геймификация прогресса от Silver до Elite Gold.
+- **FOMO Triggers**: "Толпа верит в...", побуждающая к действию.
 
-- Лендинг для презентации админу
-- Mini App с white-label оболочкой
-- Форма фиксации прогноза
-- Crowd split
-- Топ дня и недели
-- Профиль игрока
-- Admin digest page
-- API routes
-- Telegram webhook route для `/start`
-
-## Что нужно подключить для боевого пилота
-
-1. Vercel Pro
-2. Supabase Postgres или другой Postgres
-3. Токен Telegram-бота
-4. Webhook secret
-5. BotFather → Menu Button → Mini App URL
-
-## Быстрый старт локально
-
-```powershell
-Copy-Item .env.example .env
-npm install
-npm run build
-npm run dev
-```
-
-После запуска открой:
-- `http://localhost:3000/` — лендинг
-- `http://localhost:3000/mini/vitos-club` — Mini App demo
-- `http://localhost:3000/admin/vitos-club` — admin demo
-
-## Режимы
-
-### Demo
-
-```env
-DEMO_MODE=true
-NEXT_PUBLIC_DEMO_MODE=true
-```
-
-Подходит для демонстрации админу без базы и реальных Telegram-пользователей.
-
-### Live
-
-```env
-DEMO_MODE=false
-NEXT_PUBLIC_DEMO_MODE=false
-DATABASE_URL=...
-TELEGRAM_BOT_TOKEN=...
-TELEGRAM_BOT_USERNAME=...
-TELEGRAM_WEBHOOK_SECRET=...
-```
-
-Подходит для реального пилота в канале.
-
-## Что ещё сделать после первой презентации
-
-- Реальный scoring job
-- Weekly report generation
-- Admin auth
-- Внесение результата матча через админку
-- Share card для публикации в группу
-- Redis для кэша и очередей
+---
+**Разработчик:** [ТВОЁ ИМЯ/VITOS] 
+**GitHub:** https://github.com/visitvitosatos-pixel/channel-league-mvp.git

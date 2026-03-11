@@ -14,27 +14,33 @@ enum RoundStatus {
   SCORED
 }
 
+// Расширенный список для ставок на Бундеслигу и Нидерланды
 enum PickSide {
   HOME
   DRAW
   AWAY
+  OVER_1_5   // Для пробития ТБ 1.5 (часто в 1-м тайме)
+  OVER_2_5   // Твой основной запрос на ТБ 2.5
+  UNDER_2_5
+  BTTS_YES   // Обе забьют
+  BTTS_NO
 }
 
 model Channel {
-  id            String        @id @default(cuid())
-  slug          String        @unique
-  title         String
-  brandName     String
-  accentColor   String        @default("#7C5CFF")
-  logoUrl       String?
+  id             String         @id @default(cuid())
+  slug           String         @unique
+  title          String
+  brandName      String
+  accentColor    String         @default("#7C5CFF")
+  logoUrl        String?
   telegramChatId String?
-  isActive      Boolean       @default(true)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  admins        ChannelAdmin[]
-  rounds        Round[]
-  events        Event[]
-  reports       AdminReport[]
+  isActive       Boolean        @default(true)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  admins         ChannelAdmin[]
+  rounds         Round[]
+  events         Event[]
+  reports        AdminReport[]
 }
 
 model ChannelAdmin {
@@ -43,7 +49,7 @@ model ChannelAdmin {
   tgUserId  String
   role      String   @default("owner")
   createdAt DateTime @default(now())
-  channel    Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
 
   @@unique([channelId, tgUserId])
 }
@@ -60,32 +66,38 @@ model User {
 }
 
 model Round {
-  id         String       @id @default(cuid())
-  channelId  String
-  dateKey    String
-  title      String
-  lockAt     DateTime
-  status     RoundStatus  @default(DRAFT)
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  channel    Channel      @relation(fields: [channelId], references: [id], onDelete: Cascade)
-  matches    Match[]
-  scores     Score[]
+  id          String       @id @default(cuid())
+  channelId   String
+  dateKey     String
+  title       String
+  lockAt      DateTime
+  status      RoundStatus  @default(DRAFT)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  channel     Channel      @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  matches     Match[]
+  scores      Score[]
   predictions Prediction[]
 
   @@unique([channelId, dateKey])
 }
 
 model Match {
-  id         String     @id @default(cuid())
+  id          String       @id @default(cuid())
   roundId     String
-  sport      String     @default("football")
-  homeTeam   String
-  awayTeam   String
-  startsAt   DateTime
-  resultSide PickSide?
-  scoreLine  String?
-  round      Round      @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  sport       String       @default("football")
+  homeTeam    String
+  awayTeam    String
+  startsAt    DateTime
+  
+  // Статистика для анализа xG и результативности
+  homeXG      Float?       
+  awayXG      Float?       
+  scoreHT     String?      // Счет первого тайма (например "1:0")
+  scoreLine   String?      // Финальный счет (например "2:1")
+  
+  resultSide  PickSide?
+  round       Round        @relation(fields: [roundId], references: [id], onDelete: Cascade)
   predictions Prediction[]
 }
 
@@ -124,13 +136,13 @@ model Score {
 }
 
 model Event {
-  id         String   @id @default(cuid())
+  id          String   @id @default(cuid())
   channelId   String
   userId      String?
-  type       String
-  payload    Json
-  createdAt  DateTime @default(now())
-  channel    Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  type        String
+  payload     Json
+  createdAt   DateTime @default(now())
+  channel     Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
 }
 
 model AdminReport {

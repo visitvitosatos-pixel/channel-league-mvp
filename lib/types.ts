@@ -1,4 +1,7 @@
-export type PickSide = "HOME" | "DRAW" | "AWAY";
+// lib/types.ts
+// Это файл-словарь. Он объясняет системе, что такое "Матч", "Профиль" и т.д.
+
+export type PickSide = "HOME" | "DRAW" | "AWAY" | "OVER_2_5" | "BTTS_YES";
 
 export interface ChannelBranding {
   slug: string;
@@ -17,6 +20,10 @@ export interface MatchCard {
   startsAt: string;
   resultSide?: PickSide | null;
   scoreLine?: string | null;
+  // --- АНАЛИТИКА ДЛЯ КЛИЕНТА ---
+  homeXG?: number | null;   // Острота атаки хозяев (xG)
+  awayXG?: number | null;   // Острота атаки гостей (xG)
+  scoreHT?: string | null;  // Счет первого тайма
 }
 
 export interface CrowdSplit {

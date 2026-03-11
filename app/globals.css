@@ -468,4 +468,121 @@ button {
     max-width: 100%;
     font-size: clamp(32px, 10vw, 48px);
   }
+}/* Стили для нашей премиум-таблицы */
+
+.tableWrap {
+  margin-top: 20px;
+  overflow: hidden; /* Чтобы скругления карточки не резались */
+}
+
+.boardTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px; /* Создаем отступы между строками для эффекта карточек */
+}
+
+.boardTable tr {
+  background: rgba(255, 255, 255, 0.03); /* Еле заметный фон строки */
+  transition: transform 0.2s ease;
+}
+
+.boardTable tr:hover {
+  transform: scale(1.01); /* Легкое увеличение при наведении */
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.topRankRow {
+  /* Подсветка для топ-3 */
+  background: linear-gradient(90deg, rgba(124, 92, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%) !important;
+}
+
+.avatarPlaceholder {
+  width: 32px;
+  height: 32px;
+  background: var(--accent-color, #7C5CFF);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.8rem;
+  margin-right: 12px;
+  color: white;
+  box-shadow: 0 0 10px rgba(124, 92, 255, 0.3); /* Неоновое свечение аватарки */
+}
+
+.playerCell {
+  display: flex;
+  align-items: center;
+}
+
+.playerTag {
+  display: block;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.accuracyBadge {
+  background: rgba(0, 255, 133, 0.1);
+  color: #00FF85; /* Ярко-зеленый для точности */
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  display: inline-block;
+}
+
+.streakCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}.landingGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 30px;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.heroColumn h1 {
+  font-size: 3rem;
+  line-height: 1.1;
+  background: linear-gradient(90deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+}
+
+.metricCard.highlight {
+  border: 1px solid var(--accent-color);
+  background: rgba(124, 92, 255, 0.05);
+}
+
+.badge {
+  background: var(--accent-color);
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+.featureList li {
+  margin-bottom: 12px;
+  list-style: none;
+  position: relative;
+  padding-left: 25px;
+}
+
+.featureList li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--accent-color);
+  font-weight: bold;
+}
+
+@media (max-width: 900px) {
+  .landingGrid { grid-template-columns: 1fr; }
 }

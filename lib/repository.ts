@@ -62,37 +62,47 @@ class PrismaRepository implements Repository {
 
   async getCurrentRound(slug: string): Promise<RoundPayload> {
     const prisma = getPrisma();
+    
+    // 1. Ищем раунд в базе. Include вытягивает связанные матчи и прогнозы.
     const round = await prisma.round.findFirst({
       where: { channel: { slug } },
       include: { matches: true, predictions: true },
       orderBy: { dateKey: "desc" },
     });
+
+    // 2. ЗАЩИТА: Если базы нет или она пустая, отдаем демо-данные.
+    // Это спасет твой Vercel от падения (Error 500), если клиент зайдет, а база спит.
     if (!round || !round.matches[0]) return demoRound;
 
+    const featured = round.matches[0];
     const total = Math.max(round.predictions.length, 1);
-    const home = round.predictions.filter((x) => x.pick === "HOME").length;
-    const draw = round.predictions.filter((x) => x.pick === "DRAW").length;
-    const away = round.predictions.filter((x) => x.pick === "AWAY").length;
-
+    
+    // 3. СОБИРАЕМ ДАННЫЕ ДЛЯ ФРОНТЕНДА
+    // Здесь мы превращаем данные из БД в понятный для карточек формат.
     return {
       id: round.id,
       dateKey: round.dateKey,
       title: round.title,
       lockAt: round.lockAt.toISOString(),
-      status: round.status,
+      status: round.status as any, // Приводим тип статуса (DRAFT/OPEN)
       featuredMatch: {
-        id: round.matches[0].id,
-        sport: round.matches[0].sport,
-        homeTeam: round.matches[0].homeTeam,
-        awayTeam: round.matches[0].awayTeam,
-        startsAt: round.matches[0].startsAt.toISOString(),
-        resultSide: round.matches[0].resultSide,
-        scoreLine: round.matches[0].scoreLine,
+        id: featured.id,
+        sport: featured.sport,
+        homeTeam: featured.homeTeam,
+        awayTeam: featured.awayTeam,
+        startsAt: featured.startsAt.toISOString(),
+        resultSide: featured.resultSide as any,
+        scoreLine: featured.scoreLine,
+        // Добавляем аналитику (если полей в БД еще нет, ставим заглушку)
+        homeXG: (featured as any).homeXG || 0, 
+        awayXG: (featured as any).awayXG || 0,
+        scoreHT: (featured as any).scoreHT || "0:0"
       },
+      // Считаем проценты выбора "толпы" для визуальной шкалы
       crowdSplit: {
-        HOME: Math.round((home / total) * 100),
-        DRAW: Math.round((draw / total) * 100),
-        AWAY: Math.round((away / total) * 100),
+        HOME: Math.round((round.predictions.filter(p => p.pick === 'HOME').length / total) * 100),
+        DRAW: Math.round((round.predictions.filter(p => p.pick === 'DRAW').length / total) * 100),
+        AWAY: Math.round((round.predictions.filter(p => p.pick === 'AWAY').length / total) * 100),
       },
     };
   }
@@ -199,23 +209,30 @@ class PrismaRepository implements Repository {
       },
     });
 
-    await prisma.prediction.upsert({
-      where: { userId_roundId_matchId: { userId: user.id, roundId: round.id, matchId: round.matches[0].id } },
-      create: {
-        userId: user.id,
-        channelId: channel.id,
-        roundId: round.id,
-        matchId: round.matches[0].id,
-        pick: input.pick,
-        confidence: input.confidence,
-        note: input.note,
-      },
-      update: {
-        pick: input.pick,
-        confidence: input.confidence,
-        note: input.note,
-      },
-    });
+    // Внутри метода submitPrediction в классе PrismaRepository
+await prisma.prediction.upsert({
+  where: { 
+    userId_roundId_matchId: { 
+      userId: user.id, 
+      roundId: round.id, 
+      matchId: round.matches[0].id 
+    } 
+  },
+  create: {
+    userId: user.id,
+    channelId: channel.id,
+    roundId: round.id,
+    matchId: round.matches[0].id,
+    pick: input.pick as any, // ДОБАВЬ "as any" ТУТ
+    confidence: input.confidence,
+    note: input.note,
+  },
+  update: {
+    pick: input.pick as any, // И ТУТ ТОЖЕ
+    confidence: input.confidence,
+    note: input.note,
+  },
+});
 
     await prisma.event.create({
       data: {
