@@ -1,9 +1,19 @@
 import { GlassCard } from "@/components/GlassCard";
 import { getRepository } from "@/lib/repository";
 
-export default async function AdminPage({ params }: { params: { slug: string } }) {
+// --- КОММЕНТАРИЙ ОТ КРЕАТОРА ---
+// Мы добавили тип Promise для params. Это решит твою ошибку билда.
+// Теперь Next.js понимает, что slug придет асинхронно.
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export default async function AdminPage({ params }: PageProps) {
+  // Вытаскиваем slug через await — это критически важно для Next.js 15+
+  const { slug } = await params; 
+  
   const repository = getRepository();
-  const overview = await repository.getAdminOverview(params.slug);
+  const overview = await repository.getAdminOverview(slug);
 
   return (
     <main className="pageWrap adminLayout">
@@ -54,7 +64,9 @@ export default async function AdminPage({ params }: { params: { slug: string } }
            {overview.topPlayers.slice(0, 3).map(player => (
              <div key={player.tgUserId} className="adminPlayerRow">
                <span>{player.displayName}</span>
-               <span className="badge">Streak: {player.streak}🔥</span>
+               <span className="badge" style={{ background: overview.channel.accentColor }}>
+                 Streak: {player.streak}🔥
+               </span>
              </div>
            ))}
          </div>
