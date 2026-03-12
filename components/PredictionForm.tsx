@@ -21,7 +21,8 @@ export function PredictionForm({ slug, defaultName = "Pulsar" }: PredictionFormP
     event.preventDefault();
     setLoading(true);
     setMessage(null);
-    try {
+    try { 
+      
       const response = await fetch("/api/predictions", {
         method: "POST",
         headers: { "content-type": "application/json" },

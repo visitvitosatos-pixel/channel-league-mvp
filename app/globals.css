@@ -1,104 +1,82 @@
-/* Основные настройки цветов */
 :root {
-  --bg-main: #050508; /* Глубокий черный фон */
-  --text-primary: #FFFFFF; /* Чисто белый текст для заголовков */
-  --text-secondary: #94A3B8; /* Серый текст для описаний */
-  --accent: #7C5CFF; /* Твой фирменный фиолетовый цвет */
+  --bg-dark: #050507;
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --accent: #7c5cff;
+  --text-dim: #94a3b8;
 }
 
 body {
-  background-color: var(--bg-main);
-  color: var(--text-primary);
+  background: var(--bg-dark);
+  color: #fff;
   margin: 0;
-  font-family: sans-serif;
-  /* Добавляем мягкое фиолетовое свечение по углам, чтобы экран не был просто черным */
-  background-image: 
-    radial-gradient(circle at top left, rgba(124, 92, 255, 0.1), transparent),
-    radial-gradient(circle at bottom right, rgba(0, 209, 255, 0.05), transparent);
+  font-family: 'Inter', sans-serif;
 }
 
-/* Исправляем заголовок "Репутация важнее...", который вылезал за экран */
-h1 {
-  font-size: 2.5rem;
-  line-height: 1.1;
-  word-wrap: break-word; /* Позволяет длинным словам переноситься */
-  overflow-wrap: break-word;
-  max-width: 100%; /* Запрещает выходить за пределы экрана */
+.landing-wrapper {
+  width: 100%;
+  max-width: 1200px; /* Ограничиваем только для того, чтобы на 4К мониторах текст не улетал в края */
+  margin: 0 auto;
+  padding: 40px 20px;
 }
 
-/* Настройка прозрачных "стеклянных" карточек */
-.GlassCard {
-  background: rgba(255, 255, 255, 0.03); /* Почти прозрачный белый */
-  backdrop-filter: blur(10px); /* Эффект размытия за стеклом */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Тонкая рамка */
-  border-radius: 16px;
-  padding: 20px;
-}/* Настройки сетки, чтобы телефон стоял слева от карточки админа */
-.landingGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: center;
+/* --- ВЕРХНЯЯ ЧАСТЬ --- */
+.hero-section {
+  text-align: center;
+  padding: 60px 0;
 }
 
-/* Стили для имитации телефона */
-.phoneVisualWrapper {
-  position: relative;
+.hero-section h1 {
+  font-size: clamp(32px, 5vw, 56px); /* Размер шрифта подстраивается под экран */
+  margin: 10px 0;
+}
+
+.description {
+  color: var(--text-dim);
+  font-size: 18px;
+  max-width: 700px;
+  margin: 0 auto 30px;
+}
+
+.button-group {
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.phoneFrame {
-  width: 260px;
-  height: 520px;
-  background: #111;
-  border: 10px solid #222;
-  border-radius: 40px;
-  overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-}
-
-.phoneScreen {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
   gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap; /* Кнопки перенесутся сами, если экран узкий */
 }
 
-/* Свечение за телефоном */
-.phoneGlow {
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  background: #7C5CFF;
-  filter: blur(100px);
-  opacity: 0.2;
-  z-index: -1;
-}
-
-/* Мелкие детали внутри телефона (полоски вместо текста) */
-.mockLines .line { height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-bottom: 6px; }
-.line.short { width: 40%; }
-.line.medium { width: 60%; }
-.line.long { width: 80%; }
-.line.full { width: 100%; }
-
-.mockProfileCard, .mockBetCard {
-  background: rgba(255,255,255,0.05);
-  padding: 15px;
+/* --- КНОПКИ --- */
+.btn-main, .btn-alt {
+  padding: 16px 32px;
   border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.2s;
 }
 
-.mockButton {
-  background: #7C5CFF;
-  height: 24px;
-  border-radius: 6px;
-  margin-top: 10px;
+.btn-main { background: var(--accent); color: #fff; }
+.btn-alt { border: 1px solid #333; color: #fff; }
+
+/* --- СЕТКА КАРТОЧЕК --- */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* ВОТ ТУТ МАГИЯ: Авто-колонки */
+  gap: 20px;
+  margin-top: 50px;
 }
 
-/* Адаптив для мобилок: всё в одну колонку */
-@media (max-width: 900px) {
-  .landingGrid { grid-template-columns: 1fr; }
-  .phoneVisualWrapper { display: none; } /* Скрываем телефон на мобилках, чтобы не мешал */
+.info-card {
+  background: var(--card-bg) !important;
+  border: 1px solid rgba(255,255,255,0.05);
+  padding: 30px;
+  border-radius: 20px;
+}
+
+.info-card h3 { color: var(--accent); margin: 15px 0 10px; }
+.info-card p { color: var(--text-dim); line-height: 1.5; font-size: 15px; }
+
+/* --- АДАПТИВ ДЛЯ ТЕЛЕФОНА --- */
+@media (max-width: 600px) {
+  .hero-section { padding: 30px 0; }
+  .button-group { flex-direction: column; }
+  .btn-main, .btn-alt { width: 100%; text-align: center; box-sizing: border-box; }
 }
