@@ -1,6 +1,6 @@
-﻿import type { Metadata } from "next";
+﻿import "./globals.css";
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import "./globals.css";
 import { TelegramThemeClient } from "@/components/TelegramThemeClient";
 import { TopNav } from "@/components/TopNav";
 import Script from "next/script"; // Импортируем для вставки скриптов
