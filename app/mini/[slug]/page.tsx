@@ -4,44 +4,45 @@ import { GlassCard } from "@/components/GlassCard";
 export default function HomePage() {
   return (
     <main className="landing-wrapper">
-      {/* ПЕРВЫЙ ЭКРАН: Сразу в бой */}
-      <section className="hero-section">
-        <div className="hero-content">
-          <span className="status-badge live-pulse">LIVE: СЕЗОН ОТКРЫТ</span>
-          <h1>Vitos Betting League</h1>
-          <p className="description">
-            Твоя репутация в беттинге начинается здесь. Делай прогнозы, поднимай Trust Index и докажи, что ты лучший в комьюнити.
-          </p>
-          <div className="button-group">
-            {/* Кнопка "Вход" — самая яркая */}
-            <Link className="btn-main pulse-animation" href="/mini/vitos-club">
-              ВСТУПИТЬ В ЛИГУ (TG)
-            </Link>
-          </div>
+      <nav className="top-nav">
+        <div className="logo">SECTOR_88</div>
+        <div className="nav-links">
+          <Link href="/mini/vitos-club">Лига</Link>
+          <Link href="/admin/vitos-club">Админ-панель</Link>
+        </div>
+      </nav>
+
+      <section className="hero">
+        <span className="badge live-pulse">ACTIVE ROUND: OPEN</span>
+        <h1>Channel League</h1>
+        <p className="lead">
+          Ультимативная платформа для футбольных прогнозов. 
+          Анализируй <strong>xG</strong>, бей <strong>ТБ 2.5</strong> и забирай <strong>Streak Bonus</strong>.
+        </p>
+        
+        <div className="cta-group">
+          <Link href="/mini/vitos-club" className="btn-primary pulse">СДЕЛАТЬ ПРОГНОЗ (TG)</Link>
+          <Link href="/admin/vitos-club" className="btn-secondary">УПРАВЛЯТЬ КАНАЛОМ</Link>
         </div>
       </section>
 
-      {/* БОЕВОЙ КОМПЛЕКТ: Стеклянные карточки */}
-      <section className="features-grid">
-        <GlassCard className="info-card glass-effect">
-          <div className="card-status">Мой Профиль</div>
-          <h3>Личная статистика</h3>
-          <p>Твои хиты, промахи и текущий стрик. Всё сохраняется в твоем ID.</p>
-          <Link href="/mini/vitos-club" className="card-link">Посмотреть →</Link>
+      <section className="features">
+        <GlassCard className="glass-node">
+          <div className="node-head">⚽ FOOTBALL INSIGHTS</div>
+          <h3>Аналитика матчей</h3>
+          <p>Счет первого тайма (HT) и финальный результат. Всё для глубокого анализа твоих ставок.</p>
         </GlassCard>
 
-        <GlassCard className="info-card glass-effect">
-          <div className="card-status">Топ Игроков</div>
-          <h3>Рейтинг Лиги</h3>
-          <p>Борьба за Gold Division. Узнай, кто сегодня забирает банк и возглавляет таблицу.</p>
-          <Link href="/mini/vitos-club" className="card-link">Открыть топ →</Link>
+        <GlassCard className="glass-node">
+          <div className="node-head">📈 SCORING SYSTEM</div>
+          <h3>Crowd & Streak</h3>
+          <p>Получай дополнительные очки, если твой прогноз совпал с мнением большинства или если ты идешь на серии.</p>
         </GlassCard>
 
-        <GlassCard className="info-card glass-effect">
-          <div className="card-status">Админам</div>
-          <h3>Управление каналом</h3>
-          <p>Инструменты для автоматизации твоего сообщества и удержания аудитории.</p>
-          <Link href="/admin/vitos-club" className="card-link">Вход в панель →</Link>
+        <GlassCard className="glass-node">
+          <div className="node-head">🏢 WHITE LABEL</div>
+          <h3>Brand Control</h3>
+          <p>Настраивай <strong>accentColor</strong> и свой логотип для каждого отдельного Telegram-канала.</p>
         </GlassCard>
       </section>
     </main>
