@@ -1,45 +1,49 @@
-import { getRepository } from "@/lib/repository";
+import Link from "next/link";
 import { GlassCard } from "@/components/GlassCard";
-import { PredictionForm } from "@/components/PredictionForm";
-// ВАЖНО: Импортируем именно в фигурных скобках!
-import { LiveFeed } from "@/components/LiveFeed"; 
-import { LeaderboardTable } from "@/components/LeaderboardTable";
-import { notFound } from "next/navigation";
 
-interface PageProps {
-  params: Promise<{ slug: string }>;
-}
-
-export default async function MiniAppPage({ params }: PageProps) {
-  const { slug } = await params;
-  const repository = getRepository();
-  
-  const [round, profile, leaderboard] = await Promise.all([
-    repository.getCurrentRound(slug),
-    repository.getProfile(slug, "demo-user"), 
-    // Исправили на "weekly", чтобы TS не ругался
-    repository.getLeaderboard(slug, "weekly") 
-  ]);
-
-  if (!round) notFound();
-  if (!profile) return <div>Загрузка...</div>;
-
+export default function HomePage() {
   return (
-    <div className="miniAppWrapper">
-      <GlassCard className="profileCard">
-         {/* ... твой код профиля ... */}
-         <h3>{profile.displayName}</h3>
-      </GlassCard>
+    <main className="landing-wrapper">
+      {/* ПЕРВЫЙ ЭКРАН: Сразу в бой */}
+      <section className="hero-section">
+        <div className="hero-content">
+          <span className="status-badge live-pulse">LIVE: СЕЗОН ОТКРЫТ</span>
+          <h1>Vitos Betting League</h1>
+          <p className="description">
+            Твоя репутация в беттинге начинается здесь. Делай прогнозы, поднимай Trust Index и докажи, что ты лучший в комьюнити.
+          </p>
+          <div className="button-group">
+            {/* Кнопка "Вход" — самая яркая */}
+            <Link className="btn-main pulse-animation" href="/mini/vitos-club">
+              ВСТУПИТЬ В ЛИГУ (TG)
+            </Link>
+          </div>
+        </div>
+      </section>
 
-      {/* ТЕПЕРЬ ОН ЗАРАБОТАЕТ */}
-      <LiveFeed />
+      {/* БОЕВОЙ КОМПЛЕКТ: Стеклянные карточки */}
+      <section className="features-grid">
+        <GlassCard className="info-card glass-effect">
+          <div className="card-status">Мой Профиль</div>
+          <h3>Личная статистика</h3>
+          <p>Твои хиты, промахи и текущий стрик. Всё сохраняется в твоем ID.</p>
+          <Link href="/mini/vitos-club" className="card-link">Посмотреть →</Link>
+        </GlassCard>
 
-      <GlassCard className="mainPanel">
-        {/* ... твой код матча ... */}
-        <PredictionForm slug={slug} defaultName={profile.displayName} />
-      </GlassCard>
+        <GlassCard className="info-card glass-effect">
+          <div className="card-status">Топ Игроков</div>
+          <h3>Рейтинг Лиги</h3>
+          <p>Борьба за Gold Division. Узнай, кто сегодня забирает банк и возглавляет таблицу.</p>
+          <Link href="/mini/vitos-club" className="card-link">Открыть топ →</Link>
+        </GlassCard>
 
-      <LeaderboardTable title="Топ лиги" entries={leaderboard} />
-    </div>
+        <GlassCard className="info-card glass-effect">
+          <div className="card-status">Админам</div>
+          <h3>Управление каналом</h3>
+          <p>Инструменты для автоматизации твоего сообщества и удержания аудитории.</p>
+          <Link href="/admin/vitos-club" className="card-link">Вход в панель →</Link>
+        </GlassCard>
+      </section>
+    </main>
   );
 }
